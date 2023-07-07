@@ -1,0 +1,73 @@
+local Library = {}
+
+-- CreateLib function to initialize the library
+function Library.CreateLib(title, theme)
+    local UI = {}
+
+    -- Private variables
+    local currentTheme = theme or "Light"
+
+    -- Private functions
+    local function applyTheme(element)
+        -- Apply theme styles to the element
+        if currentTheme == "Light" then
+            -- Apply light theme styles
+            element.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            element.TextColor3 = Color3.fromRGB(0, 0, 0)
+        elseif currentTheme == "Dark" then
+            -- Apply dark theme styles
+            element.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+            element.TextColor3 = Color3.fromRGB(255, 255, 255)
+        end
+    end
+
+    -- Public functions
+    function UI.SetTheme(theme)
+        currentTheme = theme
+    end
+
+    function UI.CreateButton(text, callback)
+        local button = Instance.new("TextButton")
+        button.Text = text
+        button.Size = UDim2.new(0, 200, 0, 50)
+        button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        button.TextColor3 = Color3.fromRGB(0, 0, 0)
+        button.Font = Enum.Font.SourceSans
+        button.FontSize = Enum.FontSize.Size24
+
+        applyTheme(button)
+
+        button.MouseButton1Click:Connect(callback)
+
+        return button
+    end
+
+    function UI.CreateTextBox(callback)
+        local textBox = Instance.new("TextBox")
+        textBox.Size = UDim2.new(0, 200, 0, 50)
+        textBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        textBox.TextColor3 = Color3.fromRGB(0, 0, 0)
+        textBox.Font = Enum.Font.SourceSans
+        textBox.FontSize = Enum.FontSize.Size18
+
+        applyTheme(textBox)
+
+        textBox.FocusLost:Connect(function(enterPressed)
+            callback(textBox.Text, enterPressed)
+        end)
+
+        return textBox
+    end
+
+    -- Return the UI object
+    return UI
+end
+
+local scriptContent = [[
+  -- Paste the content of the UI library script here
+]]
+
+local loadUI = loadstring(scriptContent)
+local UI = loadUI()
+
+return UI
